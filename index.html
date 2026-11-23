@@ -654,7 +654,34 @@ const Acct={
     try{this.user=(await AU.signInWithPopup(auth,p)).user}
     catch(e){if(e.code==='auth/popup-blocked'){await AU.signInWithRedirect(auth,p);return 'redirect'}throw e}
   },
-  async signOut(){await this.fb.AU.signOut(this.fb.auth);this.user=null;this.profile=null;this.nick=''},
+  async signOut(){this.stopSync();await this.fb.AU.signOut(this.fb.auth);this.user=null;this.profile=null;this.nick=''},
+  EV_KEYS:['id','title','category','label','color','visibility','date','endDate','allDay','start','end','repeat','repeatUntil','location','notes','dept','createdAt','ownerUid'],
+  evRef(id){return this.fb.FS.doc(this.fb.db,'events',id)},
+  cleanEv(ev){const o={};this.EV_KEYS.forEach(k=>{if(ev[k]!==undefined&&ev[k]!==null)o[k]=ev[k]});return o},
+  unsub:null,
+  startSync(){
+    if(this.unsub)return Promise.resolve();
+    const {collection,onSnapshot}=this.fb.FS;
+    return new Promise(res=>{
+      let first=true;const done=()=>{if(first){first=false;res()}};
+      setTimeout(done,8000);
+      this.unsub=onSnapshot(collection(this.fb.db,'events'),async snap=>{
+        Store.cloud=true;Store.events=snap.docs.map(d=>d.data());
+        if(first&&snap.empty&&!snap.metadata.fromCache&&!ls.get('otm-calendar:v1:migrated')){try{await this.migrateLocal()}catch(e){console.error(e);toast(fbErr(e,'Couldn’t upload your existing events.'))}}
+        Store.emit();done();first=false;
+      },err=>{console.error(err);this.unsub=null;Store.cloud=false;Store.reload();toast(fbErr(err,'Couldn’t sync events.'));done()});
+    });
+  },
+  stopSync(){if(this.unsub)this.unsub();this.unsub=null;Store.cloud=false;Store.events=[]},
+  async migrateLocal(){
+    let loc=[];try{loc=JSON.parse(ls.get(Store.KEY)||'[]')}catch{}
+    loc=loc.filter(e=>e&&!e.demo&&e.id&&e.title);
+    if(loc.length){
+      const {writeBatch}=this.fb.FS;
+      for(let i=0;i<loc.length;i+=400){const b=writeBatch(this.fb.db);loc.slice(i,i+400).forEach(e=>{e.ownerUid=this.user.uid;b.set(this.evRef(e.id),this.cleanEv(e))});await b.commit()}
+    }
+    ls.set('otm-calendar:v1:migrated','1');
+  },
   async loadProfile(){
     const {doc,getDoc}=this.fb.FS,s=await getDoc(doc(this.fb.db,'users',this.user.uid));
     this.profile=s.exists()?s.data():null;this.nick=(this.profile&&this.profile.nickname)||'';return this.nick;
@@ -675,14 +702,16 @@ const Store={
     if(!ls.get(this.SEED)){this.events=seedEvents();ls.set(this.SEED,'1');this.persist()}
   },
   reload(){try{this.events=JSON.parse(ls.get(this.KEY)||'[]')}catch{}this.emit()},
-  persist(){ls.set(this.KEY,JSON.stringify(this.events))},
+  persist(){if(this.cloud)return;ls.set(this.KEY,JSON.stringify(this.events))},
+  cloud:false,
+  cloudOp(fn){if(!this.cloud)return;Promise.resolve().then(fn).catch(e=>{console.error(e);toast(fbErr(e,'Couldn’t sync with the cloud.'))})},
   emit(){this.subs.forEach(f=>f())},
   all(){return this.events},
   get(id){return this.events.find(e=>e.id===id)},
-  add(ev){this.events.push(ev);this.persist();this.emit();return ev},
-  update(id,patch){const e=this.get(id);if(e){Object.assign(e,patch);this.persist();this.emit()}},
-  remove(id){const i=this.events.findIndex(e=>e.id===id);if(i<0)return null;const [e]=this.events.splice(i,1);this.persist();this.emit();return e},
-  removeWhere(fn){const n=this.events.length;this.events=this.events.filter(e=>!fn(e));this.persist();this.emit();return n-this.events.length},
+  add(ev){if(this.cloud)ev.ownerUid=Acct.user.uid;this.events.push(ev);this.persist();this.emit();this.cloudOp(()=>Acct.fb.FS.setDoc(Acct.evRef(ev.id),Acct.cleanEv(ev)));return ev},
+  update(id,patch){const e=this.get(id);if(e){Object.assign(e,patch);this.persist();this.emit();this.cloudOp(()=>Acct.fb.FS.updateDoc(Acct.evRef(id),Acct.cleanEv(patch)))}},
+  remove(id){const i=this.events.findIndex(e=>e.id===id);if(i<0)return null;const [e]=this.events.splice(i,1);this.persist();this.emit();this.cloudOp(()=>Acct.fb.FS.deleteDoc(Acct.evRef(id)));return e},
+  removeWhere(fn){const n=this.events.length,gone=this.events.filter(fn);this.events=this.events.filter(e=>!fn(e));this.persist();this.emit();this.cloudOp(async()=>{const {writeBatch}=Acct.fb.FS;for(let i=0;i<gone.length;i+=400){const b=writeBatch(Acct.fb.db);gone.slice(i,i+400).forEach(e=>b.delete(Acct.evRef(e.id)));await b.commit()}});return n-this.events.length},
   subscribe(f){this.subs.add(f)}
 };
 const uid=()=>'e_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
@@ -839,14 +868,21 @@ function checkNick(raw){
 function fbErr(e,fallback='Something went wrong. Please try again.'){
   const c=(e&&e.code)||'';
   if(c==='auth/popup-closed-by-user'||c==='auth/cancelled-popup-request'||c==='auth/user-cancelled')return '';
-  if(c==='auth/unauthorized-domain')return 'This site’s address isn’t authorized for sign-in yet. Add it in Firebase → Authentication → Settings → Authorized domains.';
-  if(c==='auth/operation-not-allowed')return 'Google sign-in isn’t turned on in Firebase yet.';
-  if(c==='auth/operation-not-supported-in-this-environment')return 'Google sign-in needs the page to be opened from a web address (https://), not a local file.';
-  if(c==='auth/network-request-failed')return 'Network error. Check your connection and try again.';
-  if(c==='auth/too-many-requests')return 'Too many attempts. Please wait a moment and try again.';
-  if(c==='permission-denied')return 'Couldn’t access your profile. Make sure the Firestore rules are published.';
-  if(c==='unavailable')return 'Can’t reach the database right now. Check your connection and try again.';
-  return fallback;
+  const tag=c?` [${c}]`:(e&&e.message?` [${String(e.message).slice(0,90)}]`:'');
+  const M={
+    'auth/unauthorized-domain':'This site’s address isn’t authorized for sign-in yet. Add it in Firebase → Authentication → Settings → Authorized domains (e.g. yourname.github.io).',
+    'auth/operation-not-allowed':'Google sign-in isn’t turned on in Firebase yet (Authentication → Sign-in method → Google).',
+    'auth/operation-not-supported-in-this-environment':'Google sign-in needs the page to be opened from a web address (https://), not a local file.',
+    'auth/network-request-failed':'Network error. Check your connection and try again.',
+    'auth/too-many-requests':'Too many attempts. Please wait a moment and try again.',
+    'auth/invalid-api-key':'The Firebase API key is invalid. Check the config in the code.',
+    'auth/internal-error':'Sign-in failed inside Firebase. Check that Google sign-in is enabled and this domain is authorized.',
+    'permission-denied':'Access denied by Firestore rules. Publish the latest firestore.rules in Firebase → Firestore Database → Rules.',
+    'unavailable':'Can’t reach Firestore. Make sure the database is created (Firebase → Firestore Database → Create database) and you’re online.',
+    'not-found':'Firestore database isn’t created yet. Create it in Firebase → Firestore Database.',
+    'failed-precondition':'Firestore database isn’t created yet or isn’t ready. Create it in Firebase → Firestore Database.'
+  };
+  return (M[c]||fallback)+tag;
 }
 function showGate(w){
   const map={pw:'lockForm',g:'gCard',nick:'nickForm'};
@@ -859,6 +895,7 @@ function prepNick(){
   $('#nickWho').textContent=u.email?`Signed in as ${u.email}`:'';
   setTimeout(()=>$('#nickInp').focus(),80);
 }
+async function launch(greet){try{await Acct.startSync()}catch(e){console.error(e)}enterApp(greet)}
 function enterApp(greet){
   const d=ss.get('otm-dept');
   if(d&&DEPTS[d])chooseDept(d);else showPicker();
@@ -871,7 +908,7 @@ async function proceed(greet){
     catch(e){console.error(e);showGate('g');$('#gMsg').textContent=fbErr(e);return}
   }
   if(!Acct.nick){prepNick();showGate('nick');return}
-  enterApp(greet);
+  await launch(greet);
 }
 async function afterUnlock(){
   try{await Acct.init()}
@@ -898,7 +935,7 @@ function initAccount(){
     const r=checkNick($('#nickInp').value),m=$('#nickMsg'),b=$('#nickBtn');
     if(r.err){m.textContent=r.err;return}
     m.textContent='';b.disabled=true;
-    try{await Acct.saveNick(r.v);enterApp(true)}
+    try{await Acct.saveNick(r.v);await launch(true)}
     catch(err){console.error(err);m.textContent=fbErr(err)}
     finally{b.disabled=false}
   });
@@ -1280,7 +1317,7 @@ function initApp(){
     else if(k==='gout')signOutAll();
     else if(k==='ics'){const list=Store.all().filter(ev=>inScope(ev));if(!list.length)return toast('Nothing to export yet');downloadICS(list,`otm-${S.scope}-calendar.ics`)}
     else if(k==='demo'){if(await confirmBox({title:'Remove sample events?',text:'This deletes only the demo events that came with the site. Events you added stay.',ok:'Remove',danger:true})){const n=Store.removeWhere(e=>e.demo);toast(`${n} sample events removed`)}}
-    else if(k==='clear'){if(await confirmBox({title:'Delete ALL events?',text:'This removes every event from this browser’s calendar. It can’t be undone.',ok:'Delete everything',danger:true}))toast(`${Store.removeWhere(()=>true)} events deleted`)}
+    else if(k==='clear'){if(await confirmBox({title:'Delete ALL events?',text:'This removes every event from the shared calendar for everyone. It can’t be undone.',ok:'Delete everything',danger:true}))toast(`${Store.removeWhere(()=>true)} events deleted`)}
   });
   let qt;$('#q').addEventListener('input',e=>{
     clearTimeout(qt);qt=setTimeout(()=>{
@@ -1302,7 +1339,7 @@ function initApp(){
     else if(e.key==='ArrowLeft')shift(-1);else if(e.key==='ArrowRight')shift(1);
   });
   Store.subscribe(()=>{if($('#appScreen').classList.contains('active'))renderAll();else if($('#picker').classList.contains('active'))showPicker()});
-  window.addEventListener('storage',e=>{if(e.key===Store.KEY)Store.reload()});
+  window.addEventListener('storage',e=>{if(e.key===Store.KEY&&!Store.cloud)Store.reload()});
   setInterval(()=>{if(S.view==='week'&&$('#appScreen').classList.contains('active')&&!modalEl){const n=$('.nowline');if(n){const d=new Date();n.style.top=(d.getHours()*60+d.getMinutes())/60*56+'px'}}},60000);
 }
 function applyTheme(){document.documentElement.dataset.theme=S.theme;$('meta[name=theme-color]').content=S.theme==='dark'?'#060A14':'#EDF1FA'}
