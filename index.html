@@ -495,71 +495,6 @@ html[data-theme=light] .mark .logo{color:var(--accent)}
   .cm-body{max-width:84%}
   .ch-pill{bottom:112px}
 }
-
-/* ---------- CHAT · glass lounge upgrade ---------- */
-@property --ch{syntax:'<color>';inherits:true;initial-value:#2FA4FF}
-.chatm{--ch:#2FA4FF;--sp:cubic-bezier(.34,1.56,.64,1);transition:--ch .7s;background:color-mix(in srgb,var(--solid) 86%,transparent);backdrop-filter:blur(30px) saturate(1.5);-webkit-backdrop-filter:blur(30px) saturate(1.5);box-shadow:0 40px 100px -30px rgba(0,0,0,.85),0 0 0 1px color-mix(in srgb,var(--ch) 30%,transparent),-30px 0 90px -40px var(--ch)}
-.overlay.right .modal.chatm{animation:chin .55s var(--ease)}
-@keyframes chin{from{opacity:0;transform:translateX(70px) scale(.97)}}
-.ch-main{overflow:hidden}
-.ch-amb{position:absolute;width:360px;height:360px;border-radius:50%;filter:blur(80px);opacity:.3;background:var(--ch);top:-120px;right:-80px;pointer-events:none;animation:drift 16s ease-in-out infinite alternate}
-.ch-amb.b{top:auto;right:auto;bottom:-140px;left:-100px;background:var(--accent2);opacity:.2;animation-delay:-7s}
-.ch-head,.ch-foot{position:relative;z-index:1}
-.ch-head{background:linear-gradient(180deg,color-mix(in srgb,var(--ch) 16%,transparent),transparent);border-bottom-color:color-mix(in srgb,var(--ch) 22%,var(--line))}
-.ch-hl .ch-ic{box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent),0 0 24px -4px var(--c)}
-.ch-sh h2{background:linear-gradient(120deg,var(--text),var(--ch));-webkit-background-clip:text;background-clip:text;color:transparent}
-.ch-it{transition:transform .2s var(--sp),background .2s}
-.ch-it:hover{transform:translateX(3px)}
-.ch-it.on{background:linear-gradient(90deg,color-mix(in srgb,var(--c) 24%,transparent),transparent 90%);border-color:color-mix(in srgb,var(--c) 38%,transparent);box-shadow:inset 3px 0 0 var(--c),0 10px 26px -16px var(--c)}
-.ch-mt em,#chatBtn .nb{animation:ping 2.2s infinite}
-@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--danger) 60%,transparent)}70%,100%{box-shadow:0 0 0 8px transparent}}
-.ch-day span{backdrop-filter:blur(8px)}
-.ch-div{color:var(--ch)}.ch-div::before,.ch-div::after{background:linear-gradient(90deg,transparent,var(--ch))}.ch-div::after{transform:scaleX(-1)}
-.cm-av{background:linear-gradient(145deg,color-mix(in srgb,var(--c) 75%,#000),color-mix(in srgb,var(--c) 38%,#000));color:#fff;border:0;box-shadow:0 0 0 2px var(--solid),0 0 0 3.5px color-mix(in srgb,var(--c) 65%,transparent),0 6px 14px -6px var(--c)}
-.cm-bub{backdrop-filter:blur(10px);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 14%,var(--surface2)),var(--surface2));border-color:color-mix(in srgb,var(--c) 28%,var(--line));box-shadow:0 8px 20px -14px rgba(0,0,0,.7)}
-.cm.me .cm-bub{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 80%,#000),color-mix(in srgb,var(--accent2) 66%,#000));box-shadow:0 12px 28px -12px var(--accent),inset 0 1px 0 rgba(255,255,255,.18)}
-.cm.new .cm-body{transform-origin:0 100%;animation:cmin .5s var(--sp)}
-.cm.me.new .cm-body{transform-origin:100% 100%;animation-name:cmme}
-@keyframes cmin{from{opacity:0;transform:translate(-16px,12px) scale(.9)}}
-@keyframes cmme{from{opacity:0;transform:translate(16px,18px) scale(.88)}}
-.cm.jb .cm-bub{background:none;border:0;box-shadow:none;backdrop-filter:none;font-size:46px;line-height:1.15;padding:0 2px}
-.cm.jb.new .cm-bub{animation:jb .8s var(--sp)}
-@keyframes jb{from{opacity:0;transform:scale(.2) rotate(-18deg)}}
-.cm.mt .cm-bub{box-shadow:0 0 0 2px var(--accent),0 0 30px -6px var(--accent)}
-.mn{color:var(--ch);font-weight:800;padding:0 4px;border-radius:6px;background:color-mix(in srgb,var(--ch) 16%,transparent)}
-.cm.me .mn{color:#fff;background:rgba(255,255,255,.22)}
-.lk{display:inline-flex;align-items:center;gap:5px;padding:1px 10px;border-radius:99px;font-size:13px;font-weight:700;text-decoration:none!important;background:color-mix(in srgb,currentColor 13%,transparent)}
-.lk span{opacity:.6;font-size:11px}
-.cm-bub code{padding:1px 6px;border-radius:6px;background:rgba(0,0,0,.3);font:12.5px ui-monospace,Menlo,monospace}
-.cm-act{animation:pk .18s var(--sp)}
-.cm-pick{border-radius:99px;padding:5px 7px;animation:pk .25s var(--sp)}
-.cm-pick button{transition:transform .18s var(--sp)}.cm-pick button:hover{transform:scale(1.35) translateY(-4px)}
-.cm-rx button{backdrop-filter:blur(8px);transition:transform .15s var(--sp)}.cm-rx button:hover{transform:scale(1.12)}
-@keyframes pk{from{opacity:0;transform:translateY(8px) scale(.85)}}
-.ch-pill{animation:pk .3s var(--sp);display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--ch),var(--accent2))}
-.ch-pill.ico-only{padding:9px;bottom:112px}
-.ch-empty .big{animation:flt 3.2s ease-in-out infinite;box-shadow:0 0 40px -6px var(--ch);color:var(--ch)}
-@keyframes flt{50%{transform:translateY(-8px) rotate(-4deg)}}
-.ch-foot{background:none;border-top:0;padding:8px 14px 12px}
-.ch-comp{align-items:flex-end;padding:6px;border-radius:24px;background:color-mix(in srgb,var(--solid) 70%,transparent);border:1px solid var(--line2);backdrop-filter:blur(16px);box-shadow:0 16px 40px -22px rgba(0,0,0,.8);transition:border-color .2s,box-shadow .25s}
-.ch-comp:focus-within{border-color:var(--ch);box-shadow:0 0 0 4px color-mix(in srgb,var(--ch) 20%,transparent),0 16px 44px -18px var(--ch)}
-.ch-comp textarea,.ch-comp textarea:focus{border:0!important;background:transparent!important;box-shadow:none!important;padding:11px 4px}
-.btn.primary.ch-send{border-radius:50%;background:linear-gradient(135deg,var(--ch),var(--accent2));box-shadow:0 10px 24px -8px var(--ch);transition:transform .35s var(--sp),opacity .2s,box-shadow .3s;overflow:hidden}
-.btn.primary.ch-send.idle{opacity:.4;transform:scale(.86);box-shadow:none}
-.ch-send.fly svg{animation:fly .55s var(--ease)}
-@keyframes fly{45%{transform:translate(28px,-28px) scale(.5);opacity:0}46%{transform:translate(-28px,28px) scale(.5);opacity:0}}
-.ch-emb{width:42px;height:42px;flex:none;border:0;border-radius:50%;background:transparent;color:var(--muted);display:grid;place-items:center;transition:transform .25s var(--sp),color .2s,background .2s}
-.ch-emb:hover{color:var(--ch);background:var(--surface);transform:rotate(-12deg) scale(1.12)}
-.ch-emo{position:absolute;left:14px;bottom:calc(100% - 2px);width:min(340px,calc(100% - 28px));padding:8px;border-radius:20px;background:var(--solid);border:1px solid var(--line2);box-shadow:var(--shadow);z-index:6;transform-origin:0 100%;animation:pk .25s var(--sp)}
-.eh{display:flex;gap:2px;padding-bottom:6px;border-bottom:1px solid var(--line)}
-.eh button{flex:1;border:0;border-radius:10px;background:none;font-size:18px;padding:6px 0;opacity:.5}.eh .on{opacity:1;background:var(--surface2)}
-.eg{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;max-height:200px;overflow-y:auto;padding-top:6px}
-.eg button{border:0;background:none;font-size:22px;padding:5px 0;border-radius:10px;transition:transform .15s var(--sp),background .15s}.eg button:hover{background:var(--surface2);transform:scale(1.3)}
-.fx{position:fixed;z-index:140;pointer-events:none}
-.fx i{position:absolute;left:0;top:0;font-style:normal;font-size:18px;animation:fx 1s cubic-bezier(.2,.8,.3,1) forwards}
-.fx i:first-child{font-size:34px}.fx i.cf{width:7px;height:11px;border-radius:2px;font-size:0}
-@keyframes fx{0%{transform:translate(-50%,-50%) scale(.2);opacity:1}60%{opacity:1}100%{transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) rotate(var(--r)) scale(1);opacity:0}}
-@media (max-width:720px){.overlay.right .modal.chatm{animation:pop .35s var(--ease)}.ch-foot{padding-bottom:max(12px,env(safe-area-inset-bottom))}}
 </style>
 </head>
 <body>
@@ -1424,7 +1359,7 @@ Object.assign(I,{
   smile:'<circle cx="12" cy="12" r="9"/><path d="M8.5 14s1.2 2 3.5 2 3.5-2 3.5-2M9 9.5h.01M15 9.5h.01"/>'
 });
 const BASE_TITLE=document.title;
-const REACTS={like:'👍',dislike:'👎',hot:'🔥',heart:'❤️',love:'❤️‍🔥',pray:'🙏',party:'🎉',smile:'😄',cry:'😭',shock:'🤯',sly:'🌚',sassy:'💅'}
+const REACTS={like:'👍',dislike:'👎',hot:'🔥',heart:'❤️',love:'❤️‍🔥',pray:'🙏',party:'🎉',smile:'😄',cry:'😭',shock:'🤯',sly:'🌚',sassy:'💅'};
 const clock=ts=>{const d=new Date(ts);return fmtTime(pad(d.getHours())+':'+pad(d.getMinutes()))};
 const dayKey=ts=>ymd(new Date(ts));
 const dayLabel=ts=>{
@@ -1436,41 +1371,10 @@ const chatLinks=t=>esc(t).replace(/https?:\/\/(?:[^\s<>&]|&amp;)+/g,u=>{
   let tail='';const m=u.match(/[.,;:!?)\]]+$/);if(m){tail=m[0];u=u.slice(0,-tail.length)}
   return `<a href="${u}" target="_blank" rel="noopener noreferrer">${u}</a>${tail}`;
 });
-const RM=matchMedia('(prefers-reduced-motion:reduce)');
-const gr=s=>window.Intl&&Intl.Segmenter?[...new Intl.Segmenter().segment(s)].map(x=>x.segment):Array.from(s);
-const EMO={'🙂':'😀😃😄😁😆😅😂🤣😊😇🙂😉😍🥰😘😋😜🤪🤗🤔😏😴🥳😎🤩😢😭😤😡🥺😱🤯😬🙄','👍':'👍👎👏🙌🙏🤝💪✌️🤞🫶👋🤙👌✋🤟👀','❤️':'❤️🧡💛💚💙💜🖤🤍💖💗💕💞💝🔥✨⭐🌟💯','✝️':'✝️🙏📖🕊️⛪🕯️🌿🌈☀️🌅👼🎶🎵🎤🎸🥁','🎉':'🎉🎊🥳🎂🎁🏆🥇🎈🍕🍔🍟🍰🍩🍫☕🧋🍉🍓⚽🏀🎮📸'};
-const jumbo=t=>{t=String(t||'').trim();if(!t||t.length>24||!/^(?:\p{Extended_Pictographic}|\p{Emoji_Modifier}|[\uFE0F\u200D\s])+$/u.test(t))return false;const n=gr(t.replace(/\s/g,'')).length;return n>=1&&n<=3};
-function rich(t){
-  const k=[],st=h=>'\uE000'+(k.push(h)-1)+'\uE000';let s=esc(t);
-  s=s.replace(/`([^`\n]+)`/g,(_,c)=>st(`<code>${c}</code>`));
-  s=s.replace(/https?:\/\/(?:[^\s<>&]|&amp;)+/g,u=>{
-    let tail='';const m=u.match(/[.,;:!?)\]]+$/);if(m){tail=m[0];u=u.slice(0,-tail.length)}
-    let h='';try{h=new URL(u.replace(/&amp;/g,'&')).hostname.replace(/^www\./,'')}catch{}
-    return st(`<a class="lk" href="${u}" title="${u}" target="_blank" rel="noopener noreferrer">${esc(h||u)}<span>↗</span></a>`)+tail;
-  });
-  s=s.replace(/\*\*([^*\n]+)\*\*/g,'<b>$1</b>').replace(/(^|[\s(])\*([^*\n]+)\*(?=$|[\s).,!?])/g,'$1<i>$2</i>').replace(/~~([^~\n]+)~~/g,'<s>$1</s>');
-  s=s.replace(/(^|[\s(])@([^\s@<>&]{1,20})/g,'$1<span class="mn">@$2</span>');
-  return s.replace(/\uE000(\d+)\uE000/g,(_,i)=>k[i]);
-}
-const Fx={
-  pop(k,el){const r=el&&el.getBoundingClientRect?el.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0};this.at(r.left+r.width/2,r.top+r.height/2,REACTS[k]||k);if(navigator.vibrate)navigator.vibrate(10)},
-  at(x,y,e){
-    if(RM.matches)return;const party=e==='🎉',n=party?28:8,cols=['#FF5D73','#FFC857','#2FA4FF','#2DD4A7','#A58BFF'];
-    const c=document.createElement('div');c.className='fx';c.style.cssText=`left:${x}px;top:${y}px`;
-    for(let i=0;i<n;i++){
-      const s=document.createElement('i'),a=Math.random()*Math.PI*2,d=(party?70:36)+Math.random()*(party?90:60);
-      s.style.setProperty('--x',Math.cos(a)*d+'px');s.style.setProperty('--y',(Math.sin(a)*d-(party?0:56))+'px');s.style.setProperty('--r',(Math.random()*540-270)+'deg');s.style.animationDelay=Math.random()*90+'ms';
-      if(party){s.className='cf';s.style.background=cols[i%5]}else s.textContent=i?(e==='❤️'?e:'✨'):e;
-      c.appendChild(s);
-    }
-    document.body.appendChild(c);setTimeout(()=>c.remove(),1400);
-  },
-  fly(){const b=$('#chSend');if(!b)return;b.classList.remove('fly');void b.offsetWidth;b.classList.add('fly')}
-};
 const Chat={
   chans:[],msgs:{},lim:{},unsubs:{},ready:{},more:{},drafts:{},
   cur:'all',panel:null,divAt:0,divId:null,reply:null,editing:null,selId:null,pickId:null,delId:null,delT:0,
-  pillN:0,lastId:null,lastTs:0,fresh:false,force:false,errShown:false,seen:new Set(),seenOn:false,tapId:null,tapT:0,
+  pillN:0,lastId:null,lastTs:0,fresh:false,force:false,errShown:false,
 
   ok(){return !!(Acct.user&&Acct.nick&&Acct.fb&&S.me)},
   want(){return S.me==='staff'?['all','staff',...REG_DEPTS]:['all',S.me]},
@@ -1556,14 +1460,13 @@ const Chat={
     if(this.panel&&document.body.contains(this.panel)){this.saveDraft();this.setCur(ch);return}
     const ov=openModal(`<div class="modal chatm" role="dialog" aria-label="Chat">
       <aside class="ch-side"><div class="ch-sh"><h2>Chat</h2><p>Talk with your team or everyone</p></div><div class="ch-list" id="chList"></div></aside>
-      <section class="ch-main"><i class="ch-amb"></i><i class="ch-amb b"></i>
+      <section class="ch-main">
         <header class="ch-head" id="chHead"></header>
         <div class="ch-msgs" id="chMsgs"></div>
         <button class="ch-pill" id="chPill" hidden></button>
         <div class="ch-foot">
-          <div class="ch-emo" id="chEmo" hidden></div>
           <div class="ch-ctx" id="chCtx" hidden></div>
-          <div class="ch-comp"><button class="ch-emb" data-emo aria-label="Emoji">${ico('smile',20)}</button><textarea id="chIn" rows="1" maxlength="1000" aria-label="Message" autocomplete="off"></textarea><button class="btn primary ch-send" id="chSend" aria-label="Send">${ico('send',18)}</button></div>
+          <div class="ch-comp"><textarea id="chIn" rows="1" maxlength="1000" aria-label="Message" autocomplete="off"></textarea><button class="btn primary ch-send" id="chSend" aria-label="Send">${ico('send',18)}</button></div>
           <div class="ch-hint"><span class="kb">Enter to send · Shift+Enter for a new line</span><span id="chCnt"></span></div>
         </div>
       </section></div>`,{side:true,onClose:()=>{this.saveDraft();clearTimeout(this.delT);this.panel=null;this.btn()}});
@@ -1578,7 +1481,7 @@ const Chat={
     box.addEventListener('click',e=>this.onMsgClick(e));
     $('#chPill',ov).onclick=()=>{box.scrollTo({top:box.scrollHeight,behavior:'smooth'})};
     $('#chSend',ov).onclick=()=>{this.send();if(!matchMedia('(hover:none)').matches)ta.focus()};
-    $('#chCtx',ov).onclick=e=>{if(e.target.closest('[data-x]'))this.cancelCtx()};this.bindX(ov);
+    $('#chCtx',ov).onclick=e=>{if(e.target.closest('[data-x]'))this.cancelCtx()};
     ta.addEventListener('input',()=>{this.grow();const n=ta.value.length;$('#chCnt',ov).textContent=n>800?`${n}/1000`:''});
     ta.addEventListener('keydown',e=>{
       if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&e.keyCode!==229&&!matchMedia('(hover:none)').matches){e.preventDefault();this.send();return}
@@ -1592,7 +1495,7 @@ const Chat={
     if(!matchMedia('(hover:none)').matches)setTimeout(()=>ta.focus(),140);
   },
   setCur(ch){
-    this.cur=ch;this.seen=new Set();this.seenOn=false;const cm=$('.chatm');if(cm)cm.style.setProperty('--ch',this.color(ch));this.divAt=this.getRead(ch);this.divId=null;
+    this.cur=ch;this.divAt=this.getRead(ch);this.divId=null;
     this.reply=this.editing=this.selId=this.pickId=this.delId=null;
     this.fresh=true;this.pillN=0;this.lastId=null;this.lastTs=0;
     const ta=$('#chIn');
@@ -1600,7 +1503,7 @@ const Chat={
     this.renderHead();this.renderMsgs();this.renderList();this.ctx();this.btn();
   },
   saveDraft(){const ta=$('#chIn');if(ta&&!this.editing)this.drafts[this.cur]=ta.value},
-  grow(){const ta=$('#chIn');if(!ta)return;const sb=$('#chSend');if(sb)sb.classList.toggle('idle',!ta.value.trim());ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,120)+'px'},
+  grow(){const ta=$('#chIn');if(!ta)return;ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,120)+'px'},
   renderHead(){
     const ch=this.cur;
     $('#chHead').innerHTML=`<div class="ch-hl"><span class="ch-ic" style="--c:${this.color(ch)}">${this.icon(ch)}</span><div><h3>${esc(this.name(ch))}</h3><p>${esc(this.subtitle(ch))}</p></div></div><button class="icon-btn" data-close aria-label="Close chat">${ico('x')}</button>`;
@@ -1654,7 +1557,6 @@ const Chat={
       this.pillN=0;if(document.visibilityState==='visible')this.mark(this.cur);
     }
     this.pill();
-    if(this.ready[this.cur]){list.forEach(m=>this.seen.add(m.id));this.seenOn=true}
   },
   msgHTML(m,same){
     const me=Acct.user.uid,mine=m.uid===me,d=DEPTS[m.dept]||DEPTS.staff,c=d.color;
@@ -1666,11 +1568,11 @@ const Chat={
     const act=m.pending?'':`<div class="cm-act"><button data-act="react" title="React" aria-label="React">${ico('smile',16)}</button><button data-act="reply" title="Reply" aria-label="Reply">${ico('reply',16)}</button>${mine?`<button data-act="edit" title="Edit" aria-label="Edit">${ico('edit',16)}</button><button data-act="del" class="danger${delOn?' conf':''}" title="Delete" aria-label="Delete">${delOn?'Delete?':ico('trash',16)}</button>`:''}</div>${this.pickId===m.id?`<div class="cm-pick">${Object.keys(REACTS).map(k=>`<button data-pick="${k}" aria-label="${k}">${REACTS[k]}</button>`).join('')}</div>`:''}`;
     const sel=this.selId===m.id||this.pickId===m.id||delOn;
     const av=esc((Array.from(m.nick||'?')[0]||'?').toUpperCase());
-    return `<div class="cm${mine?' me':''}${jumbo(m.text)?' jb':''}${this.seenOn&&!this.seen.has(m.id)?' new':''}${!mine&&Acct.nick&&String(m.text).toLowerCase().includes('@'+Acct.nick.toLowerCase())?' mt':''}${same?' same':''}${sel?' sel':''}${m.pending?' pend':''}" data-mid="${esc(m.id)}" style="--c:${c}"><span class="cm-av">${av}</span><div class="cm-body">${meta}${q}<div class="cm-bub" title="${esc(fmtLong(dayKey(m.ts)))} ${clock(m.ts)}">${rich(m.text)}${m.editedAt?'<span class="ed">edited</span>':''}</div>${rx?`<div class="cm-rx">${rx}</div>`:''}${act}</div></div>`;
+    return `<div class="cm${mine?' me':''}${same?' same':''}${sel?' sel':''}${m.pending?' pend':''}" data-mid="${esc(m.id)}" style="--c:${c}"><span class="cm-av">${av}</span><div class="cm-body">${meta}${q}<div class="cm-bub" title="${esc(fmtLong(dayKey(m.ts)))} ${clock(m.ts)}">${chatLinks(m.text)}${m.editedAt?'<span class="ed">edited</span>':''}</div>${rx?`<div class="cm-rx">${rx}</div>`:''}${act}</div></div>`;
   },
   onMsgClick(e){
     const t=e.target,ta=$('#chIn'),list=this.msgs[this.cur]||[];
-    if(t.closest('[data-older]')){this.seenOn=false;this.lim[this.cur]=(this.lim[this.cur]||60)+60;this.listen(this.cur);return}
+    if(t.closest('[data-older]')){this.lim[this.cur]=(this.lim[this.cur]||60)+60;this.listen(this.cur);return}
     const jump=t.closest('[data-jump]');
     if(jump){
       const id=jump.dataset.jump,el=id&&$('#chMsgs').querySelector(`.cm[data-mid="${CSS.escape(id)}"]`);
@@ -1682,8 +1584,8 @@ const Chat={
     if(!m){if(this.selId||this.pickId||this.delId){this.selId=this.pickId=this.delId=null;this.renderMsgs()}return}
     if(t.closest('a'))return;
     const a=t.closest('[data-act]'),p=t.closest('[data-pick]'),rx=t.closest('[data-rx]');
-    if(p){this.react(m,p.dataset.pick,p);this.pickId=null;this.renderMsgs();return}
-    if(rx){this.react(m,rx.dataset.rx,rx);return}
+    if(p){this.react(m,p.dataset.pick);this.pickId=null;this.renderMsgs();return}
+    if(rx){this.react(m,rx.dataset.rx);return}
     if(a){
       const k=a.dataset.act;
       if(k==='react'){this.pickId=this.pickId===m.id?null:m.id;this.delId=null;this.renderMsgs()}
@@ -1695,25 +1597,7 @@ const Chat={
       }
       return;
     }
-    if(t.closest('.cm-bub')){const n=Date.now();if(this.tapId===m.id&&n-this.tapT<320){this.tapId=null;this.like(m,e);return}this.tapId=m.id;this.tapT=n;this.selId=this.selId===m.id?null:m.id;this.pickId=this.delId=null;this.renderMsgs()}
-  },
-  like(m,e){
-    this.selId=null;const mine=((m.reactions&&m.reactions.heart)||[]).includes(Acct.user.uid);
-    if(mine)Fx.at(e.clientX,e.clientY,'❤️');
-    else this.react(m,'heart',{getBoundingClientRect:()=>({left:e.clientX,top:e.clientY,width:0,height:0})});
-    this.renderMsgs();
-  },
-  bindX(ov){
-    const ta=$('#chIn',ov),pk=$('#chEmo',ov),keys=Object.keys(EMO);let tab=keys[0];
-    const draw=()=>{pk.innerHTML=`<div class="eh">${keys.map(k=>`<button data-t="${k}" class="${k===tab?'on':''}" aria-label="Emoji category">${k}</button>`).join('')}</div><div class="eg">${gr(EMO[tab]).map(e=>`<button data-e="${e}">${e}</button>`).join('')}</div>`};
-    ov.addEventListener('click',e=>{
-      const t=e.target;
-      if(t.closest('[data-emo]')){pk.hidden=!pk.hidden;if(!pk.hidden)draw();return}
-      const tb=t.closest('[data-t]');if(tb){tab=tb.dataset.t;draw();return}
-      const em=t.closest('[data-e]');
-      if(em){const s=ta.selectionStart,v=ta.value,x=em.dataset.e;ta.value=(v.slice(0,s)+x+v.slice(ta.selectionEnd)).slice(0,1000);ta.selectionStart=ta.selectionEnd=s+x.length;ta.dispatchEvent(new Event('input'));if(!matchMedia('(hover:none)').matches)ta.focus();return}
-      if(!t.closest('#chEmo'))pk.hidden=true;
-    });
+    if(t.closest('.cm-bub')){this.selId=this.selId===m.id?null:m.id;this.pickId=this.delId=null;this.renderMsgs()}
   },
   ctx(){
     const c=$('#chCtx');if(!c)return;
@@ -1748,12 +1632,11 @@ const Chat={
       console.error(e);toast(fbErr(e,'Couldn’t send your message.'));
       const t=$('#chIn');if(t&&this.cur===ch&&!t.value){t.value=text;this.grow()}
     });
-    ta.value='';Fx.fly();if(text.includes('🎉'))Fx.at(innerWidth-110,innerHeight-90,'🎉');this.drafts[ch]='';this.reply=null;this.grow();this.ctx();$('#chCnt').textContent='';
+    ta.value='';this.drafts[ch]='';this.reply=null;this.grow();this.ctx();$('#chCnt').textContent='';
   },
-  react(m,key,el){
+  react(m,key){
     const {FS,db}=Acct.fb,me=Acct.user.uid;
     const has=Array.isArray(m.reactions&&m.reactions[key])&&m.reactions[key].includes(me);
-    if(!has)Fx.pop(key,el);
     FS.updateDoc(FS.doc(db,'channels',this.cur,'messages',m.id),{['reactions.'+key]:has?FS.arrayRemove(me):FS.arrayUnion(me)}).catch(e=>{console.error(e);toast(fbErr(e,'Couldn’t add your reaction.'))});
   },
   del(m){
