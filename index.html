@@ -971,7 +971,7 @@ function checkNick(raw){
 function fbErr(e,fallback='Something went wrong. Please try again.'){
   const c=(e&&e.code)||'';
   if(c==='auth/popup-closed-by-user'||c==='auth/cancelled-popup-request'||c==='auth/user-cancelled')return '';
-  const tag=c?` [${c}]`:(e&&e.message?` [${String(e.message).slice(0,90)}]`:'');
+  const tag=c?` [${c}${c==='permission-denied'?' @ '+fallback:''}]`:(e&&e.message?` [${String(e.message).slice(0,90)}]`:'');
   const M={
     'auth/unauthorized-domain':'This site’s address isn’t authorized for sign-in yet. Add it in Firebase → Authentication → Settings → Authorized domains (e.g. yourname.github.io).',
     'auth/operation-not-allowed':'Google sign-in isn’t turned on in Firebase yet (Authentication → Sign-in method → Google).',
@@ -1429,7 +1429,7 @@ const Chat={
       this.refresh(ch);
     },err=>{
       console.error(err);
-      if(!this.errShown){this.errShown=true;toast(fbErr(err,'Couldn’t load chat.'))}
+      if(!this.errShown){this.errShown=true;toast(fbErr(err,'load chat: channels/'+ch+'/messages'))}
     });
   },
   incoming(ch,m){
